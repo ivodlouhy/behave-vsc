@@ -226,8 +226,9 @@ export const getContentFromFilesystem = async (uri: vscode.Uri | undefined): Pro
 export const isStepsFile = (uri: vscode.Uri): boolean => {
   const path = uri.path.toLowerCase();
 
-  if (!path.includes("/steps/"))
-    return false;
+  // FIXME: this is a temporary fix for the issue where the steps folder is not always named "steps" in the workspace
+  // if (!path.includes("/steps/"))
+  //   return false;
 
   return path.endsWith(".py");
 }

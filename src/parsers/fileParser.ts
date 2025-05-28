@@ -143,6 +143,11 @@ export class FileParser {
     else
       stepFiles = await findFiles(wkspSettings.stepsSearchUri, undefined, ".py", cancelToken);
 
+    for (const extraStepUri of wkspSettings.extraStepUris) {
+      const extraStepFiles = await findFiles(extraStepUri, undefined, ".py", cancelToken);
+      stepFiles.push(...extraStepFiles);
+    }
+
     stepFiles = stepFiles.filter(uri => isStepsFile(uri));
 
     if (stepFiles.length < 1 && !cancelToken.isCancellationRequested) {

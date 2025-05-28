@@ -1,0 +1,6 @@
+{
+    "behave-vsc.xRay": true,
+    "behave-vsc.extraStepPaths": [
+        "extrasteps"
+    ]
+}

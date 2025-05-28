@@ -14,6 +14,7 @@ export class WindowSettings {
   // (in a multi-root workspace they will be read from *.code-workspace, and greyed-out and disabled in settings.json)
   public readonly multiRootRunWorkspacesInParallel: boolean;
   public readonly xRay: boolean;
+  public readonly extraStepPaths: string[] = [];
 
   constructor(winConfig: vscode.WorkspaceConfiguration) {
 
@@ -25,8 +26,11 @@ export class WindowSettings {
     if (xRayCfg === undefined)
       throw "xRay is undefined";
 
+    const extraStepPathsCfg: string[] = winConfig.get("extraStepPaths") || [];
+
     this.multiRootRunWorkspacesInParallel = multiRootRunWorkspacesInParallelCfg;
     this.xRay = xRayCfg;
+    this.extraStepPaths = extraStepPathsCfg;
   }
 }
 
@@ -39,6 +43,7 @@ export class WorkspaceSettings {
   public readonly justMyCode: boolean;
   public readonly runParallel: boolean;
   public readonly workspaceRelativeFeaturesPath: string;
+  public readonly extraStepUris: vscode.Uri[] = [];
   // convenience properties
   public readonly id: string;
   public readonly uri: vscode.Uri;
@@ -70,11 +75,11 @@ export class WorkspaceSettings {
     const runParallelCfg: boolean | undefined = wkspConfig.get("runParallel");
     if (runParallelCfg === undefined)
       throw "runParallel is undefined";
-
+    const extraStepPathsCfg: string[] = wkspConfig.get("extraStepPaths") || [];
 
     this.justMyCode = justMyCodeCfg;
     this.runParallel = runParallelCfg;
-
+    
 
     this.workspaceRelativeFeaturesPath = featuresPathCfg.replace(/^\\|^\//, "").replace(/\\$|\/$/, "").trim();
     // vscode will not substitute a default if an empty string is specified in settings.json
@@ -101,6 +106,10 @@ export class WorkspaceSettings {
         this.stepsSearchUri = vscode.Uri.file(stepsSearchFsPath);
       else
         logger.showWarn(`No "steps" folder found.`, this.uri);
+    }
+
+    for (const extraStepPath of extraStepPathsCfg) {
+      this.extraStepUris.push(vscode.Uri.joinPath(wkspUri, extraStepPath));
     }
 
     if (envVarOverridesCfg) {
