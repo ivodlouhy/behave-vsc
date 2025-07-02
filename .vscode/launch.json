@@ -176,6 +176,23 @@
 			"preLaunchTask": "${defaultBuildTask}",
 		},
 		{
+			"name": "Debug: step line break",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"${workspaceFolder}/example-projects/step line break",
+				"--extensionDevelopmentPath=${workspaceFolder}",
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"skipFiles": [
+				"<node_internals>/**",
+				"**/app/out/vs/**"
+			],
+			"preLaunchTask": "${defaultBuildTask}",
+		},
+		{
 			"name": "Run Test Suite: simple workspace",
 			"type": "extensionHost",
 			"request": "launch",

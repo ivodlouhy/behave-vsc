@@ -86,16 +86,24 @@ export async function parseStepsFileContent(featuresUri: vscode.Uri, content: st
 
     const foundStep = stepFileStepStartRe.exec(line);
     if (foundStep) {
-      if (foundStep && line.endsWith("(")) {
+      if (line.endsWith("(")) {
         startLineNo = lineNo;
         multiLineStepType = foundStep[2];
         multiLineBuilding = true;
         continue;
       }
+      if (line.endsWith('"') || line.endsWith("'")) {
+        startLineNo = lineNo;
+        multiLineStepType = foundStep[2];
+        multiLineBuilding = true;
+        multiLine = line.replaceAll(new RegExp(`${stepFileStepStartStr}`, "ig"), "");
+        continue;
+      }
     }
 
     if (multiLineBuilding) {
-      if (line.startsWith(")")) {
+      if (line.endsWith(")")) {
+        multiLine += line.replaceAll(`)$`, "");
         multiLine = multiLine.replaceAll("''", "");
         multiLine = multiLine.replaceAll('""', "");
         multiLineBuilding = false;
