@@ -24,6 +24,10 @@
 			"path": "./multiroot ignored",
 			"name": "ignored folder"
 		},
+		{
+			"path": "./step line break",
+			"name": "step line break"
+		},
 	],
 	"settings": {
 		"behave-vsc.multiRootRunWorkspacesInParallel": true,

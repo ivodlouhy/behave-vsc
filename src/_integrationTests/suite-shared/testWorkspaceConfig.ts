@@ -15,6 +15,7 @@ export class TestWorkspaceConfig implements vscode.WorkspaceConfiguration {
 	private multiRootRunWorkspacesInParallel: boolean | undefined;
 	private runParallel: boolean | undefined;
 	private xRay: boolean | undefined;
+	private extraStepPaths: string[] = [];
 
 	// all user-settable settings in settings.json or *.code-workspace
 	constructor({
@@ -59,6 +60,8 @@ export class TestWorkspaceConfig implements vscode.WorkspaceConfiguration {
 				return <T><unknown>(this.runParallel === undefined ? false : this.runParallel);
 			case "xRay":
 				return <T><unknown>(this.xRay === undefined ? false : this.xRay);
+			case "extraStepPaths":
+				return <T><unknown>(this.extraStepPaths);
 			default:
 				debugger; // eslint-disable-line no-debugger
 				throw new Error("get() missing case for section: " + section);
@@ -94,6 +97,9 @@ export class TestWorkspaceConfig implements vscode.WorkspaceConfiguration {
 				break;
 			case "xRay":
 				response = <T><unknown>this.xRay;
+				break;
+			case "extraStepPaths":
+				response = <T><unknown>this.extraStepPaths;
 				break;
 			default:
 				debugger; // eslint-disable-line no-debugger
